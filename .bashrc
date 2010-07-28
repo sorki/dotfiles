@@ -63,25 +63,28 @@ function set_prompt {
   fi
   # }-
 
-   # Virtualenv -{
-  _venv=`basename "$VIRTUAL_ENV"`
-  venv="" # need this to clear it when we leave a venv
-  if [[ -n $_venv ]]; then
-      venv="${NIL}(${_venv}${NIL})"
-  fi
-  # }-
+ # Virtualenv -{
+_venv=`basename "$VIRTUAL_ENV"`
+venv="" # need this to clear it when we leave a venv
+if [[ -n $_venv ]]; then
+    venv="${NIL}(${_venv}${NIL})"
+fi
+# }-
 
   # Git branch / dirtiness -{
   if git update-index -q --refresh 2>/dev/null; git diff-index --quiet --cached HEAD --ignore-submodules -- 2>/dev/null && git diff-files --quiet --ignore-submodules 2>/dev/null
-      then dirty=""
+    then dirty=""
   else
-      dirty="${RED}*${NIL}"
+    dirty="${RED}*${NIL}"
   fi
   _branch=$(git symbolic-ref HEAD 2>/dev/null)
   _branch=${_branch#refs/heads/}
   branch=""
   if [[ -n $_branch ]]; then
-      branch="${NIL}[${WHITE}${_branch}${dirty}${NIL}]"
+    branch="${NIL}[${WHITE}${_branch}${dirty}${NIL}]"
+  fi
+  if [ $PWD = $HOME ]; then
+    branch=$dirty
   fi
   # }-
 
