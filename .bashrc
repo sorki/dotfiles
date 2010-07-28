@@ -292,6 +292,12 @@ function gaia_ant() {
 alias ant='gaia_ant'
 # }-
 
+
+# Use bash-completion, if available
+if [ -f /etc/bash_completion ]; then
+  . /etc/bash_completion
+fi
+
 # load system specific
 if [ -f ~/.bash_local ]; then
   . ~/.bash_local
