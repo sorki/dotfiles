@@ -1,0 +1,10 @@
+[gammu]
+port=00:01:E3:51:4A:B4
+connection=blueat
+name=Siemens S65
+model=
+[gammu1]
+port=00:1B:59:1D:11:FD
+connection=blueat
+name=Sony Ericsson K800i
+model=
