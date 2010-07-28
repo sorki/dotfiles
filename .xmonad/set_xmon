@@ -1,0 +1,8 @@
+gconftool-2 -s -t string /desktop/gnome/session/required_components/windowmanager xmonad
+
+# disable nautilus
+gconftool-2 --type boolean --set /apps/nautilus/preferences/show_desktop false
+
+
+# change BG
+gconftool-2 --type string --set /desktop/gnome/background/picture_filename "/path/to/your/image.png"

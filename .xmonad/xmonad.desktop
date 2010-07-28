@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Xmonad
+Exec=/usr/bin/xmonad
+NoDisplay=true
+X-GNOME-WMName=Xmonad
+X-GNOME-Bugzilla-Bugzilla=XMonad
+X-GNOME-Bugzilla-Product=xmonad
+X-GNOME-Bugzilla-Component=general
+X-GNOME-Autostart-Phase=WindowManager
+X-GNOME-Provides=windowmanager
+X-GNOME-Autostart-Notify=true
+
+
+# put this to /usr/share/applications/
+

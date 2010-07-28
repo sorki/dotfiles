@@ -1,0 +1,1 @@
+gconftool-2 -s -t string /desktop/gnome/session/required_components/windowmanager metacity

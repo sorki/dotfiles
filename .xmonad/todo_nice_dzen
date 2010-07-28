@@ -1,0 +1,179 @@
+#!/bin/zsh
+#
+# dzen2 script - Scott Kidder 2010
+#
+# Dzen conf
+ICONDIR=~/.dzen/dzenIcons
+ICONCOL1="#3a0a0d"
+ICONCOL2="#780000"
+BARFG="#780000"
+BARBG="#212121"
+SEGCOL="#212121"
+# Configuration
+DATE_FORMAT='%a, %-m/%-d/%y %I:%M:%S'
+GCOUNT=0
+GBLINK=0
+ACOUNT=0
+ABLINK=0
+
+INTERVAL=1
+
+DATEIVAL=1
+MAILIVAL=30
+MPDIVAL=1
+PMIVAL=180
+DISKIVAL=360
+SYSIVAL=1
+WEATHERIVAL=720
+BLINKIVAL=1
+
+# Functions
+fdate() { date +$DATE_FORMAT }
+
+fmail() {
+    pass=$(cat /opt/foobarquuz.txt)
+    wget --secure-protocol=TLSv1 --timeout=3 -t 1 -q -O - https://scott.kidder11:${pass}@mail.google.com/mail/feed/atom --no-check-certificate | grep 'fullcount' | sed -e 's/.*<fullcount>//;s/<\/fullcount>.*//'
+}
+
+fweather() {
+    lynx -dump 'http://api.wunderground.com/weatherstation/WXCurrentObXML.asp?ID=KMIMTPLE2' | grep GMT | awk '{print $10}'
+}
+
+fpacman() { pacman -Qu | wc -l }
+
+fmpd() { mpc | head -n 1 }
+
+fmpdbar() {
+mpc | sed -ne 's/^.*(\([0-9]*\)%).*$/\1/p' | gdbar -h 10 -w 40 -fg $BARFG -bg $BARBG -s o -nonl
+}
+
+fmpdvol() {
+    V=$(mpc | grep volume | awk '{print $2}' | tr -d repeat:// | tr -d %//)
+    if [ -z $V ]; then
+        echo 100 | gdbar -h 8 -w 36 -fg $BARFG -bg $BARBG -ss 1 -sw 3 -s o -max 101
+    else
+        echo $V | gdbar -h 8 -w 36 -fg $BARFG -bg $BARBG -ss 1 -sw 3 -s o -max 101
+    fi
+}
+
+falsavol() {
+    amixer | grep -A 4 Master | tail -n 1 | awk '{print $4}' | tr -d \[\]%// | gdbar -h 8 -w 36 -fg $BARFG -bg $BARBG -ss 1 -sw 3 -s o -max 101
+}
+
+fdiskusage1() {
+    df -h / | sed -ne 's/^.* \([0-9]*\)% .*/\1/p' | gdbar -h 8 -w 40 -fg $BARFG -bg $SEGCOL -ss 1 -sw 3 -nonl    
+}
+fdiskusage2() {
+    df -h /shared | sed -ne 's/^.* \([0-9]*\)% .*/\1/p' | gdbar -h 8 -w 40 -fg $BARFG -bg $SEGCOL -ss 1 -sw 3 -nonl    
+}
+
+fmem() {
+    awk '/MemTotal/ {t=$2} /MemFree/ {f=$2} /^Cached/ {c=$2} END {print t-f-c " " t;}' /proc/meminfo | gdbar -h 10 -w 60 -s o -fg $BARFG -bg $BARBG -w 50 -h 8
+}
+
+fcpu() {
+    awk '{print $1 " " $2 " " $3;}' /proc/loadavg
+}
+
+DATECOUNTER=$DATEIVAL
+MAILCOUNTER=$MAILIVAL
+MPDCOUNTER=$MPDIVAL
+PMCOUNTER=$PMIVAL
+DISKCOUNTER=$DISKIVAL
+MEMCOUNTER=$SYSIVAL
+CPUCOUNTER=$SYSIVAL
+WEATHERCOUNTER=$WEATHERIVAL
+BLINKCOUNTER=$BLINKIVAL
+
+while true; do
+    if [ $DATECOUNTER -ge $DATEIVAL ]; then
+        PDATE=$(fdate)
+        DATECOUNTER=0
+    fi
+
+    if [ $PMCOUNTER -ge $PMIVAL ]; then
+        NUM=$(fpacman)
+        ACOUNT=$NUM
+        PPM="$NUM"
+        PMCOUNTER=0
+    fi
+
+    if [ $MAILCOUNTER -ge $MAILIVAL ]; then
+        COUNT=$(fmail)
+        GCOUNT=$COUNT
+        blink --c -r $COUNT;
+        PMAIL="$COUNT"
+        MAILCOUNTER=0
+    fi
+
+    if [ $BLINKCOUNTER -ge $BLINKIVAL ]; then
+        if [ $GCOUNT -ne 0 ]; then
+            if [ $GBLINK -ne 0 ]; then
+                PMICON="^fg($ICONCOL2)^i($ICONDIR/mail.xbm)^fg(#)"
+                GBLINK=0
+            else
+                PMICON="^i($ICONDIR/mail.xbm)"
+                GBLINK=1
+            fi
+        fi
+
+        if [ $ACOUNT -ne 0 ]; then
+            if [ $ABLINK -ne 0 ]; then
+                AICON="^fg($ICONCOL2)^i($ICONDIR/arch.xbm)^fg(#)"
+                ABLINK=0
+            else
+                AICON="^i($ICONDIR/arch.xbm)"
+                ABLINK=1
+            fi
+        fi
+        BLINKCOUNTER=0
+    fi
+
+    if [ $MPDCOUNTER -ge $MPDCOUNTER ]; then
+        SONG=$(fmpd)
+        BAR=$(fmpdbar)
+        MVOL=$(fmpdvol)
+        AVOL=$(falsavol)
+        PMPD="^i($ICONDIR/dzen_bitmaps/music.xbm) $SONG $BAR ^i($ICONDIR/phones.xbm) $MVOL ^i($ICONDIR/spkr_02.xbm)$AVOL"
+        MPDCOUNTER=0
+    fi
+
+    if [ $DISKCOUNTER -ge $DISKIVAL ]; then
+        DISK1=$(fdiskusage1)
+        DISK2=$(fdiskusage2)
+        PDISK1="^fg($ICONCOL1)^i($ICONDIR/diskette.xbm)^fg(#) root$DISK1"
+        PDISK2="shared$DISK2"
+        DISKCOUNTER=0
+    fi
+
+    if [ $MEMCOUNTER -ge $SYSIVAL ]; then
+        PMEM="^fg($ICONCOL1)^i($ICONDIR/mem.xbm)^fg(#) $(fmem)"
+        MEMCOUNTER=0
+    fi
+
+    if [ $CPUCOUNTER -ge $SYSIVAL ]; then
+        PCPU="^fg($ICONCOL1)^i($ICONDIR/cpu.xbm)^fg(#) $(fcpu)"
+        CPUCOUNTER=0
+    fi
+
+    if [ $WEATHERCOUNTER -ge $WEATHERIVAL ]; then
+        PWEATHER="^i($ICONDIR/temp.xbm)$(fweather)"
+        WEATHERCOUNTER=0
+    fi
+
+    SEP=^fg($ICONCOL1)^i($ICONDIR/ac.xbm)^fg(#)
+    print "$PMPD $PWEATHER $PMICON $PMAIL $AICON $PPM $PCPU $PMEM $PDISK1 $PDISK2 $SEP $PDATE"
+
+    DATECOUNTER=$((DATECOUNTER+1))
+    MAILCOUNTER=$((MAILCOUNTER+1))
+    MPDCOUNTER=$((MPDCOUNTER+1))
+    PMCOUNTER=$((PMCOUNTER+1))
+    DISKCOUNTER=$((DISKCOUNTER+1))
+    MEMCOUNTER=$((MEMCOUNTER+1))
+    CPUCOUNTER=$((CPUCOUNTER+1))
+    WEATHERCOUNTER=$((WEATHERCOUNTER+1))
+    BLINKCOUNTER=$((BLINKCOUNTER+1))
+
+
+    sleep $INTERVAL
+done
