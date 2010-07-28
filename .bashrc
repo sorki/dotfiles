@@ -83,8 +83,11 @@ fi
   if [[ -n $_branch ]]; then
     branch="${NIL}[${WHITE}${_branch}${dirty}${NIL}]"
   fi
-  if [ $PWD = $HOME ]; then
-    branch=$dirty
+  if [[ $PWD == $HOME* ]]; then
+    branch=""
+    if [ $PWD = $HOME ]; then
+      branch=$dirty
+    fi
   fi
   # }-
 
