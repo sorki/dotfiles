@@ -13,6 +13,8 @@
 #
 # Now copy files without sensitive info
 
+mkdir .vim/sessions
+
 echo "Filename not printed twice == not overwritten"
 for i in .*_; do
   echo $i;
