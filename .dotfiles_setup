@@ -8,6 +8,7 @@
 # -----------------------
 #
 # .gitconfig_ [ github token ]
+# .pypirc_ [ pass ]
 #
 #
 # Now copy files without sensitive info
