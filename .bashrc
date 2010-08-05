@@ -167,8 +167,8 @@ alias -- -='cd -'
 
 # crud
 alias rm='rm -v -I'
-alias cp='cp -v -I'
-alias mv='mv -v -I'
+alias cp='cp -v -i'
+alias mv='mv -v -i'
 
 # latex
 alias latexmake="grep -l '\\documentclass' *tex | xargs latexmk -pdf -pvc -silent"
