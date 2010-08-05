@@ -1,0 +1,8 @@
+e(File) :-
+	name(File,FileString), 
+	name('vim  ', TextEditString), 
+	append(TextEditString,FileString,EDIT),
+	name(E,EDIT), 
+	shell(E),
+	reconsult(File).
+
