@@ -1,0 +1,13 @@
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[user]
+	name = Richard Marko
+	email = rissko@gmail.com
+[core]
+	excludesfile = /home/sorki/.gitignore
+	autocrlf = input
+[github]
+	user = sorki
+	token = XXX
