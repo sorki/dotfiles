@@ -13,7 +13,7 @@
 # Now copy files without sensitive info
 
 echo "Filename not printed twice == not overwritten"
-for i in .*_; do;
+for i in .*_; do
   echo $i;
   echo $i | sed s/_$// | xargs cp -v -n $i;
 done
