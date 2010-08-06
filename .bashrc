@@ -136,7 +136,11 @@ prompt_default
 
 # python virtuals, PIP -{
 if [ -f $HOME/bin/virtualenvwrapper_bashrc ]; then
-  export WORKON_HOME=/data/envs/
+  export WORKON_HOME=$HOME/envs/
+  case $HOST in
+    psyche ) export WORKON_HOME=/data/envs/ ;;
+  esac
+  
   source $HOME/bin/virtualenvwrapper_bashrc
 
   export PIP_VIRTUALENV_BASE=$WORKON_HOME
