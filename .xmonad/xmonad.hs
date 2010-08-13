@@ -163,7 +163,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
     , ((modm              , xK_b     ), sendMessage ToggleStruts)
     , ((modm              , xK_s     ), SM.submap $ searchEngineMap $ S.promptSearchBrowser myXPConfig "chromium-browser")
-    , ((modm              , xK_d    ), shellPrompt myXPConfig)
+    , ((modm              , xK_d     ), shellPrompt myXPConfig)
+    , ((modm .|. shiftMask, xK_s     ), spawn "sleep 1; xset dpms force off")
     , ((modm              , xK_r     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
     ]
     ++

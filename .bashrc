@@ -232,6 +232,8 @@ function xinedvd()
 alias playdvd='xinedvd'
 #alias playdvd='mpd'
 # }-
+
+alias dim="watch -n 20 xset dpms force off"
 # }-
 
 # lstodo -{
