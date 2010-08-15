@@ -155,6 +155,7 @@ fi
 alias ls='ls --color=always'
 alias la='ls -lash --color=always'
 alias ll='ls -lh'
+alias l.='ls -d .*'
 alias sl='ls'
 alias s='ls'
 alias l='ls'
@@ -282,6 +283,24 @@ function xtitle() {
   esac
 
 }
+
+# }-
+
+# NVIDIA -{
+function _nv_set_perf() {
+  overclocking=`nvidia-settings -t -q GPUOverclockingState`
+  if [ ! $overclocking = 1 ]; then
+    nvidia-settings --assign='GPUOverclockingState=1' > /dev/null
+  fi
+  freq=`nvidia-settings -t -q GPU3DClockFreqs`
+  if [ ! $freq = "$1,$2" ]; then
+    nvidia-settings --assign="GPU3DClockFreqs=$1,$2" > /dev/null
+  fi
+}
+
+alias nv_set_low='_nv_set_perf 150 100'
+alias nv_set_med='_nv_set_perf 300 200'
+alias nv_set_high='_nv_set_perf 600 400'
 
 # }-
 
