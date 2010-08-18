@@ -31,7 +31,7 @@ enable_startup_path: false
 
 startup_path: 
 
-zoom_mode: original
+zoom_mode: fit
 two_pass_scaling: true
 
 zoom_to_fit_allow_expand: true
@@ -185,13 +185,13 @@ rectangular_selections: false
 restore_window_positions: false
 
 
-main_window_x: 2240
+main_window_x: 1280
 
-main_window_y: 540
+main_window_y: 0
 
 main_window_width: 958
 
-main_window_height: 268
+main_window_height: 1078
 
 main_window_maximized: false
 
@@ -205,9 +205,9 @@ float_window_height: 450
 
 float_window_divider: 200
 
-divider_position_h: 293
+divider_position_h: 292
 
-divider_position_v: 159
+divider_position_v: 200
 
 ######################################################################
 #                      end of GQview config file                     #
