@@ -38,9 +38,9 @@ HD=$SHORT
 HOST=`hostname | cut -d '.' -f 1`
 DOMAIN=`hostname | cut -d '.' -f 2-`
 
-case $HOST in
-  eos | aisa | nymfe* ) HC=$RED ;;
-esac
+if [ $HOST != "psyche" ]; then
+  HC=$RED
+fi
 
 function set_prompt {
   RET=$?
