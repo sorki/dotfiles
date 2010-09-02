@@ -13,7 +13,7 @@ URxvt.scrollWithBuffer:     true
 URxvt.scrollTtyKeypress:    true
 URxvt.transparent:          true
 URxvt.shading:              40
-URxvt.fading:               30
+URxvt.fading:               15
 URxvt.font:                 xft:Monospace:size=10
 URxvt.boldFont:             xft:Monospace:bold:size=10
 URxvt.italicFont:           xft:Monospace:italic:autohint=true:size=10
