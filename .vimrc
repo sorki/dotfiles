@@ -32,6 +32,10 @@ set grepprg=grep\ -nH\ $*
 " nocompatible
 if &cp | set nocp | endif
 
+" exit insert mode with jj
+ino jj <esc>
+cno jj <c-c>
+
 """"""""""""""""
 " python       "
 """"""""""""""""
