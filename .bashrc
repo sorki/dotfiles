@@ -135,15 +135,16 @@ prompt_default
 # }-
 
 # python virtuals, PIP -{
-if [ -f $HOME/bin/virtualenvwrapper_bashrc ]; then
+if [ -f /usr/bin/virtualenvwrapper.sh ]; then
   export WORKON_HOME=$HOME/envs/
   case $HOST in
     psyche ) export WORKON_HOME=/data/envs/ ;;
   esac
   
-  source $HOME/bin/virtualenvwrapper_bashrc
+  source /usr/bin/virtualenvwrapper.sh
 
   export PIP_VIRTUALENV_BASE=$WORKON_HOME
+  export PIP_RESPECT_VIRTUALENV=true
   export PIP_DOWNLOAD_CACHE='/tmp/pip_cache'
 fi
 # }-
