@@ -8,11 +8,12 @@ import XMonad.Config.Desktop
 
 import XMonad.Util.EZConfig
 import XMonad.Util.Run
-import qualified XMonad.Prompt 		as P
+import qualified XMonad.Prompt as P
 import XMonad.Prompt.Shell
 import XMonad.Prompt
 
 import XMonad.Actions.CycleWS
+import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.WindowGo
 import qualified XMonad.Actions.Search as S
 import XMonad.Actions.Search
@@ -29,7 +30,7 @@ import XMonad.Layout.ResizableTile
 import XMonad.Layout.Reflect
 import XMonad.Layout.IM
 import XMonad.Layout.Tabbed
-import XMonad.Layout.PerWorkspace 
+import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutHints
 
@@ -45,21 +46,20 @@ myManageHook = composeAll
     [ manageHook gnomeConfig
     , className =? "MPlayer"           --> doFloat
     , className =? "Gimp"              --> doFloat
-    , resource  =? "desktop_window"    --> doIgnore
-    , resource  =? "kdesktop"          --> doIgnore
     , className =? "Pidgin"            --> doShift "im"
-    , className =? "Skype_real"        --> doShift "im"
+    , className =? "Skype0"            --> doShift "im"
     , className =? "Sonata"            --> doShift "music"
     , className =? "Thunderbird"       --> doShift "mail"
     , className =? "Chromium-browser"  --> doShift "web"
-    , title    =? "irssi"             --> doShift "irssi"
+    , resource  =? "desktop_window"    --> doIgnore
+    , resource  =? "kdesktop"          --> doIgnore
+    , title     =? "irssi"             --> doShift "irssi"
 
     , isFullscreen                     --> (doF W.focusDown <+> doFullFloat) 
     ] <+> manageDocks
 
 dzenFg = "#222222"
 dzenBg = "#edecec"
---dzenFont = "-*-clean-bold-r-normal-*-11-*-*-*-*-*-*-*"
 dzenFont = "Sans:bold:size=9"
 dzenWidth = 16
 dzenCommon = "-h "++(show dzenWidth)++" -bg '"++dzenBg++"' -fg '"++dzenFg++"' -fn '"++dzenFont++"'"
@@ -88,8 +88,8 @@ main = do
 --    lbBar <- spawnPipe lbotBar
 --    rbBar <- spawnPipe rbotBar
     xmonad $ withUrgencyHook NoUrgencyHook
-    	   $ gnomeConfig {
-	terminal           = "urxvt",
+           $ gnomeConfig {
+        terminal           = "urxvt",
         modMask            = mod1Mask,
         focusFollowsMouse  = True,
         numlockMask        = mod2Mask,
@@ -102,7 +102,7 @@ main = do
         layoutHook         = avoidStruts $ smartBorders $ myLayout,
         manageHook         = myManageHook,
 --        handleEventHook    = myEventHook,
---	startupHook        = myStartupHook >> gnomeRegister >> startupHook desktopConfig,
+--      startupHook        = myStartupHook >> gnomeRegister >> startupHook desktopConfig,
         logHook            = myLogHook statusBar
 
     }
@@ -111,25 +111,26 @@ myLayout = onWorkspace "web" (noBorders Full ||| tall ) $ onWorkspace "im" imLay
     where
       std = (tall ||| Mirror tall ||| noBorders Full)
       tall = Tall 1 (3/100) (1/2) 
+      imtall = Tall 2 (3/100) (1/2)
 
-      imLayout = reflectHoriz $ withIM pidginRatio pidginRoster $ reflectHoriz $ withIM skypeRatio skypeRoster (tall ||| Mirror tall ||| Grid)
+      imLayout = reflectHoriz $ withIM pidginRatio pidginRoster $ reflectHoriz $ withIM skypeRatio skypeRoster (imtall ||| Mirror imtall ||| Grid)
       pidginRatio  = (1%7)
       pidginRoster = And (ClassName "Pidgin") (Role "buddy_list")
       skypeRatio= (1%7)
-      skypeRoster  = (ClassName "Skype_real") `And` (Not (Title "Options")) `And` (Not (Role "Chats")) `And` (Not (Role "CallWindowForm"))
+      skypeRoster  = And (ClassName "Skype0") (Role "MainWindow")
 
 -- X prompt
 myXPConfig = defaultXPConfig                                    
-    { 
-	font  = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u" 
-	,fgColor = "#00dd00"
-	, bgColor = "#000000"
-	, borderColor = "#00dd00"
-	, bgHLight    = "#000000"
-	, fgHLight    = "#ff0000"
-	, position = Bottom
+    {
+        font  = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
+        ,fgColor = "#00dd00"
+        , bgColor = "#000000"
+        , borderColor = "#00dd00"
+        , bgHLight    = "#000000"
+        , fgHLight    = "#ff0000"
+        , position = Bottom
     }
- 
+
 searchEngineMap method = M.fromList $
        [ ((0, xK_g), method S.google )
        , ((0, xK_y), method S.youtube )
@@ -137,9 +138,6 @@ searchEngineMap method = M.fromList $
        , ((0, xK_d), method S.dictionary )
        , ((0, xK_w), method S.wikipedia )
        , ((0, xK_i), method S.imdb )
-       , ((0, xK_b), method $ S.searchEngine "archbbs" "http://bbs.archlinux.org/search.php?action=search&keywords=")
-       , ((0, xK_r), method $ S.searchEngine "AUR" "http://aur.archlinux.org/packages.php?O=0&L=0&C=0&K=")
-       , ((0, xK_a), method $ S.searchEngine "archwiki" "http://wiki.archlinux.org/index.php/Special:Search?search=")
        ]       
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
@@ -149,6 +147,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
     , ((modm,               xK_n     ), refresh)
     , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((modm .|. shiftMask, xK_Tab   ), cycleRecentWS [xK_Alt_L] xK_Tab xK_grave)
     , ((modm,               xK_j     ), windows W.focusDown)
     , ((modm,               xK_k     ), windows W.focusUp  )
     , ((modm,               xK_m     ), windows W.focusMaster  )
@@ -159,13 +158,14 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_l     ), sendMessage Expand)
     , ((modm,               xK_t     ), withFocused $ windows . W.sink)
     , ((modm,               xK_a     ), focusUrgent)
-    , ((modm              , xK_comma ), sendMessage (IncMasterN 1))
-    , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-    , ((modm              , xK_b     ), sendMessage ToggleStruts)
-    , ((modm              , xK_s     ), SM.submap $ searchEngineMap $ S.promptSearchBrowser myXPConfig "chromium-browser")
-    , ((modm              , xK_d     ), shellPrompt myXPConfig)
-    , ((modm .|. shiftMask, xK_s     ), spawn "sleep 1; xset dpms force off")
-    , ((modm              , xK_r     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
+    , ((modm,               xK_comma ), sendMessage (IncMasterN 1))
+    , ((modm,               xK_period), sendMessage (IncMasterN (-1)))
+    , ((modm,               xK_b     ), sendMessage ToggleStruts)
+--    , ((modm,               xK_s     ), SM.submap $ searchEngineMap $ S.promptSearchBrowser myXPConfig "chromium-browser")
+    , ((modm,               xK_d     ), shellPrompt myXPConfig)
+    , ((modm,               xK_s     ), spawn "~/bin/dim")
+    , ((modm .|. shiftMask, xK_s     ), spawn "killall dim")
+    , ((modm,               xK_r     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
     ]
     ++
     [((m .|. modm, k), windows $ f i)
@@ -190,18 +190,17 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     ]
 
 myLogHook h = dynamicLogWithPP $ defaultPP
-      {   ppCurrent	= dzenColor "black" "" . pad
-	, ppVisible	= dzenColor "purple" "" . pad
-	, ppHidden	= dzenColor "#777777" "" . pad
-	, ppHiddenNoWindows = dzenColor "white"  "" . pad
-	, ppUrgent	= dzenColor "#dd0000" "" . dzenStrip
-	, ppWsSep    = ""
-	, ppSep      = " | "
-	, ppTitle    = (" " ++) . dzenColor "" "" . dzenEscape
-	, ppOutput   = hPutStrLn h
- 
+      {   ppCurrent  = dzenColor "black" "" . pad
+        , ppVisible  = dzenColor "purple" "" . pad
+        , ppHidden   = dzenColor "#777777" "" . pad
+        , ppHiddenNoWindows = dzenColor "white"  "" . pad
+        , ppUrgent   = dzenColor "#dd0000" "" . dzenStrip
+        , ppWsSep    = ""
+        , ppSep      = " | "
+        , ppTitle    = (" " ++) . dzenColor "" "" . dzenEscape
+        , ppOutput   = hPutStrLn h
       }
 
 --myStartupHook = 
---	spawn "urxvt -title irssi -e ~/bin/irssi_single"
+--    spawn "urxvt -title irssi -e ~/bin/irssi_single"
 

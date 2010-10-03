@@ -180,8 +180,6 @@ alias mv='mv -v -i'
 alias latexmake="grep -l '\\documentclass' *tex | xargs latexmk -pdf -pvc -silent"
 
 
-alias dim="watch -n 20 xset dpms force off"
-
 alias psg="ps ax | grep $*"
 # }-
 
