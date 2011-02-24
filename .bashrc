@@ -133,7 +133,7 @@ function prompt_default() {
   export PROMPT_STYLE=default
 }
 
-prompt_default
+prompt_long
 
 # }-
 
@@ -184,6 +184,7 @@ alias latexmake="grep -l '\\documentclass' *tex | xargs latexmk -pdf -pvc -silen
 
 
 alias psg="ps ax | grep $*"
+alias dirshare='python -m SimpleHTTPServer 8080'
 # }-
 
 # conditional -{
@@ -239,8 +240,8 @@ function xinedvd()
 }
 alias playdvd='xinedvd'
 #alias playdvd='mpd'
-# }-
 
+# }-
 # }-
 
 # lstodo -{
@@ -310,22 +311,12 @@ alias nv_set_high='_nv_set_perf 600 400'
 
 # }-
 
-# GAIA RELATED -{
 export GAIA_DIR=/data/work/gaia
 export SOFCOMMON=${GAIA_DIR}/sw/common
 export CU7COMMON=${GAIA_DIR}/sw/cu7common
 export ANT_HOME=${SOFCOMMON}/apache-ant-1.7.0
 
-function gaia_ant() {
-  echo  -e "\033[31mGAIA: \033[m"
-  echo  -e "\033[31m Using ant 1.7.0 in ${ANT_HOME}\033[m"
-  sleep 1
-  $ANT_HOME/bin/ant $*
-}
-
-alias ant='gaia_ant'
-# }-
-
+source ~/.gaia
 
 # Use bash-completion, if available
 if [ -f /etc/bash_completion ]; then

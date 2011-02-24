@@ -1,5 +1,6 @@
 # Write your default config options here!
 fstype=none
+vo=gl
 
 subcp=cp1250
 
