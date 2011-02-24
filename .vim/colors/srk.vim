@@ -15,7 +15,7 @@ hi Comment term=bold ctermfg=Red guifg=Red
 hi Normal guifg=black guibg=white
 hi Constant term=underline ctermfg=Magenta guifg=Magenta
 hi Special term=bold ctermfg=Magenta guifg=Magenta
-hi SpecialKey ctermfg=Black guifg=Magenta
+hi SpecialKey ctermfg=DarkGray guifg=Magenta
 hi Identifier term=underline ctermfg=Blue guifg=Blue
 hi Statement term=bold ctermfg=Yellow gui=NONE guifg=Brown
 hi PreProc term=underline ctermfg=Magenta guifg=Purple
