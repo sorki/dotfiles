@@ -6,6 +6,9 @@ if [[ $- != *i* ]] ; then
   return
 fi
 
+export LANG="en_US.utf-8"
+export LC_ALL="en_US.utf-8"
+
 export EDITOR="vim"
 export PATH=$PATH:$HOME/bin
 export HISTSIZE=100000
