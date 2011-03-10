@@ -11,7 +11,7 @@ export LC_ALL="en_US.utf-8"
 
 export EDITOR="vim"
 export PATH=$PATH:$HOME/bin
-export HISTSIZE=100000
+export HISTSIZE=100000000000000000
 
 cd $HOME
 # prompt -{
@@ -316,7 +316,9 @@ export SOFCOMMON=${GAIA_DIR}/sw/common
 export CU7COMMON=${GAIA_DIR}/sw/cu7common
 export ANT_HOME=${SOFCOMMON}/apache-ant-1.7.0
 
-source ~/.gaia
+if [ -f ~/.gaia ]; then
+  source ~/.gaia
+fi
 
 # Use bash-completion, if available
 if [ -f /etc/bash_completion ]; then
