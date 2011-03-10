@@ -138,13 +138,16 @@ prompt_long
 # }-
 
 # python virtuals, PIP -{
-if [ -f /usr/bin/virtualenvwrapper.sh ]; then
+VENWRAPPER=/usr/bin/virtualenvwrapper.sh
+test -f $VENWRAPPER || VENWRAPPER=~/bin/virtualenvwrapper.sh
+
+if [ -f $VENWRAPPER ]; then
   export WORKON_HOME=$HOME/envs/
   case $HOST in
     psyche ) export WORKON_HOME=/data/envs/ ;;
   esac
-  
-  source /usr/bin/virtualenvwrapper.sh
+
+  source $VENWRAPPER
 
   export PIP_VIRTUALENV_BASE=$WORKON_HOME
   export PIP_RESPECT_VIRTUALENV=true
