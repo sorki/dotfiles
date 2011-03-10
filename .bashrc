@@ -6,6 +6,11 @@ if [[ $- != *i* ]] ; then
   return
 fi
 
+# load system specific
+if [ -f ~/.bash_local ]; then
+  . ~/.bash_local
+fi
+
 export LANG="en_US.utf-8"
 export LC_ALL="en_US.utf-8"
 
@@ -328,9 +333,5 @@ if [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
 fi
 
-# load system specific
-if [ -f ~/.bash_local ]; then
-  . ~/.bash_local
-fi
 
 #clear
