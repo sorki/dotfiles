@@ -171,6 +171,8 @@ alias l.='ls -d .*'
 alias sl='ls'
 alias s='ls'
 alias l='ls'
+alias lhn='ls | less'
+alias lhn='ls | nless'
 
 # find
 alias ff='find . -name $*'
@@ -190,7 +192,8 @@ alias mv='mv -v -i'
 # latex
 alias latexmake="grep -l '\\documentclass' *tex | xargs latexmk -pdf -pvc -silent"
 
-
+alias less="less -R"
+alias nless="less -N"
 alias psg="ps ax | grep $*"
 alias dirshare='python -m SimpleHTTPServer 8080'
 # }-
