@@ -196,12 +196,16 @@ alias less="less -R"
 alias nless="less -N"
 alias psg="ps ax | grep $*"
 alias dirshare='python -m SimpleHTTPServer 8080'
+
+alias diff='diff --side-by-side'
 # }-
 
 # conditional -{
 [[ -f /etc/profile.d/bash-completion ]] && source /etc/profile.d/bash-completion
 [[ -e `which less` ]] && alias more='less'
 [[ -e `which vim` ]] && alias vi='vim'
+
+[[ -e `which colordiff` ]] && alias diff='colordiff --side-by-side'
 
 if [ -f /usr/share/mc/mc.gentoo ]; then
   /usr/share/mc/mc.gentoo
