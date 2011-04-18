@@ -202,10 +202,10 @@ alias diff='diff --side-by-side'
 
 # conditional -{
 [[ -f /etc/profile.d/bash-completion ]] && source /etc/profile.d/bash-completion
-[[ -e `which less` ]] && alias more='less'
-[[ -e `which vim` ]] && alias vi='vim'
+[[ -e `which less > /dev/null` ]] && alias more='less'
+[[ -e `which vim > /dev/null` ]] && alias vi='vim'
 
-[[ -e `which colordiff` ]] && alias diff='colordiff --side-by-side'
+[[ -e `which colordiff > /dev/null` ]] && alias diff='colordiff --side-by-side'
 
 if [ -f /usr/share/mc/mc.gentoo ]; then
   /usr/share/mc/mc.gentoo
