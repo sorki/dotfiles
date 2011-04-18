@@ -326,15 +326,6 @@ alias nv_set_high='_nv_set_perf 600 400'
 
 # }-
 
-export GAIA_DIR=/data/work/gaia
-export SOFCOMMON=${GAIA_DIR}/sw/common
-export CU7COMMON=${GAIA_DIR}/sw/cu7common
-export ANT_HOME=${SOFCOMMON}/apache-ant-1.7.0
-
-if [ -f ~/.gaia ]; then
-  source ~/.gaia
-fi
-
 # Use bash-completion, if available
 if [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
