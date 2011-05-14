@@ -19,6 +19,7 @@ import qualified XMonad.Actions.Search as S
 import XMonad.Actions.Search
 import qualified XMonad.Actions.Submap as SM
 import XMonad.Actions.GridSelect
+import XMonad.Actions.NoBorders
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -161,6 +162,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_comma ), sendMessage (IncMasterN 1))
     , ((modm,               xK_period), sendMessage (IncMasterN (-1)))
     , ((modm,               xK_b     ), sendMessage ToggleStruts)
+    , ((modm,               xK_g     ), withFocused toggleBorder)
 --    , ((modm,               xK_s     ), SM.submap $ searchEngineMap $ S.promptSearchBrowser myXPConfig "chromium-browser")
     , ((modm,               xK_d     ), shellPrompt myXPConfig)
     , ((modm,               xK_s     ), spawn "~/bin/dim")
