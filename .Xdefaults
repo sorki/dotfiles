@@ -34,7 +34,7 @@ URxvt.urgentOnBell:         true
 !URxvt.perl-ext-common:      default,matcher
 URxvt.perl-ext-common:      matcher
 URxvt.colorUL:              #86a2be
-URxvt.urlLauncher:          chromium-browser
+URxvt.urlLauncher:          xdg-open
 URxvt.underlineURLs:        true
 URxvt.matcher.button:       1
 
