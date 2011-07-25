@@ -46,7 +46,7 @@ HD=$SHORT
 HOST=`hostname | cut -d '.' -f 1`
 DOMAIN=`hostname | cut -d '.' -f 2-`
 
-if [ $HOST != "psyche" ]; then
+if [ $HOST != "fluffy" ]; then
   HC=$RED
 fi
 
