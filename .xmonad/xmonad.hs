@@ -51,7 +51,7 @@ myManageHook = composeAll
     , className =? "Skype0"            --> doShift "im"
     , className =? "Sonata"            --> doShift "music"
     , className =? "Thunderbird"       --> doShift "mail"
-    , className =? "Chromium-browser"  --> doShift "web"
+    , className =? "google-chrome"  --> doShift "web"
     , resource  =? "desktop_window"    --> doIgnore
     , resource  =? "kdesktop"          --> doIgnore
     , title     =? "irssi"             --> doShift "irssi"
@@ -59,16 +59,18 @@ myManageHook = composeAll
     , isFullscreen                     --> (doF W.focusDown <+> doFullFloat) 
     ] <+> manageDocks
 
+-- Colors
 dzenFg = "#222222"
 dzenBg = "#edecec"
 dzenFont = "Sans:bold:size=9"
 dzenWidth = 16
-dzenCommon = "-h "++(show dzenWidth)++" -bg '"++dzenBg++"' -fg '"++dzenFg++"' -fn '"++dzenFont++"'"
+dzenCommon = "-xs 1 -h "++(show dzenWidth)++" -bg '"++dzenBg++"' -fg '"++dzenFg++"' -fn '"++dzenFont++"'"
+
 
 m1Width = 1280
 m1Height = 800
 
-lbarOffset = 28
+lbarOffset = 33
 statusRatio = (5%6)
 bottomRatio = (1%2)
 
@@ -83,14 +85,17 @@ rtopBar  = "conky -c ~/.xmonad/conkytop | dzen2 -x "++ (show $ ltopBarWidth + lb
 lbotBar  = "conky -c ~/.xmonad/conkylbot | dzen2 -y "++(show $ m1Height - dzenWidth) ++" -x "++ (show lbarOffset) ++" -w "++ (show lbotBarWidth)++" -ta l -sa l " ++ dzenCommon
 rbotBar  = "conky -c ~/.xmonad/conkyrbot | dzen2 -y "++(show $ m1Height - dzenWidth)++" -x "++ (show $ lbotBarWidth + lbarOffset) ++" -w "++ (show rbotBarWidth) ++" -ta r -sa l " ++ dzenCommon
 
-main = do 
+botBar = "conky -c ~/.xmonad/conkytop | dzen2 -xs 1 -x '0' -y '785' -h '20' -w '1280' -ta 'r' " ++ dzenCommon
+
+main = do
     statusBar <- spawnPipe ltopBar
     rtBar <- spawnPipe rtopBar
+    bBar <- spawnPipe botBar
 --    lbBar <- spawnPipe lbotBar
 --    rbBar <- spawnPipe rbotBar
     xmonad $ withUrgencyHook NoUrgencyHook
            $ gnomeConfig {
-        terminal           = "urxvt",
+        terminal           = "~/bin/terminal",
         modMask            = mod1Mask,
         focusFollowsMouse  = True,
         numlockMask        = mod2Mask,
@@ -99,10 +104,8 @@ main = do
         focusedBorderColor = "#00dd00",
         keys               = myKeys,
         mouseBindings      = myMouseBindings,
-
         layoutHook         = avoidStruts $ smartBorders $ myLayout,
         manageHook         = myManageHook,
---        handleEventHook    = myEventHook,
 --      startupHook        = myStartupHook >> gnomeRegister >> startupHook desktopConfig,
         logHook            = myLogHook statusBar
 
@@ -121,7 +124,7 @@ myLayout = onWorkspace "web" (noBorders Full ||| tall ) $ onWorkspace "im" imLay
       skypeRoster  = And (ClassName "Skype0") (Role "MainWindow")
 
 -- X prompt
-myXPConfig = defaultXPConfig                                    
+myXPConfig = defaultXPConfig
     {
         font  = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
         ,fgColor = "#00dd00"
@@ -139,7 +142,7 @@ searchEngineMap method = M.fromList $
        , ((0, xK_d), method S.dictionary )
        , ((0, xK_w), method S.wikipedia )
        , ((0, xK_i), method S.imdb )
-       ]       
+       ]
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -176,7 +179,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ++
 
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_q] [0..] -- w, q for xinerama
+        | (key, sc) <- zip [xK_q, xK_w] [0..] -- w, q for xinerama
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 
@@ -202,7 +205,3 @@ myLogHook h = dynamicLogWithPP $ defaultPP
         , ppTitle    = (" " ++) . dzenColor "" "" . dzenEscape
         , ppOutput   = hPutStrLn h
       }
-
---myStartupHook = 
---    spawn "urxvt -title irssi -e ~/bin/irssi_single"
-
