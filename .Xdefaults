@@ -4,7 +4,9 @@ URxvt.scrollKey:            true
 URxvt.secondaryScroll:      true
 URxvt.loginShell:           true
 !URxvt.depth:                32
-URxvt.background:           black
+#URxvt.background:           black
+URxvt.depth: 32
+URxvt*background: rgba:0000/0000/0000/cccc
 URxvt.foreground:           green
 URxvt.scrollBar:            false
 URxvt.scrollBar_right:      false
@@ -14,10 +16,10 @@ URxvt.scrollTtyKeypress:    true
 URxvt.transparent:          true
 URxvt.shading:              40
 URxvt.fading:               15
-URxvt.font:                 xft:Monospace:size=10
-URxvt.boldFont:             xft:Monospace:bold:size=10
-URxvt.italicFont:           xft:Monospace:italic:autohint=true:size=10
-URxvt.boldItalicFont:       xft:Monospace:bold:italic:autohint=true:size=10
+URxvt.font:                 xft:Monospace:size=11
+URxvt.boldFont:             xft:Monospace:bold:size=11
+URxvt.italicFont:           xft:Monospace:italic:autohint=true:size=11
+URxvt.boldItalicFont:       xft:Monospace:bold:italic:autohint=true:size=11
 URxvt.internalBorder:       6
 URxvt.externalBorder:       0
 URxvt.saveLines:            12000
