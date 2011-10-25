@@ -1,6 +1,7 @@
 # Write your default config options here!
 fstype=none
-vo=gl
+#vo=gl
 
 subcp=cp1250
-
+cache=8192
+cache-min=4
