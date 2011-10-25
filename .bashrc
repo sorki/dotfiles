@@ -13,6 +13,7 @@ fi
 
 export LANG="en_US.utf-8"
 export LC_ALL="en_US.utf-8"
+export BROWSER="google-chrome:chromium"
 
 export EDITOR="vim"
 export PATH=$PATH:$HOME/bin
@@ -91,12 +92,12 @@ fi
   if [[ -n $_branch ]]; then
     branch="${NIL}[${WHITE}${_branch}${dirty}${NIL}]"
   fi
-  if [[ $PWD == $HOME* ]]; then
-    branch=""
-    if [ $PWD = $HOME ]; then
-      branch=$dirty
-    fi
-  fi
+#  if [[ $PWD == $HOME* ]]; then
+#    branch=""
+#    if [ $PWD = $HOME ]; then
+#      branch=$dirty
+#    fi
+#  fi
   # }-
 
   xtitle `whoami`@`uname -n`:$PWD 
@@ -198,6 +199,9 @@ alias psg="ps ax | grep $*"
 alias dirshare='python -m SimpleHTTPServer 8080'
 
 alias diff='diff --side-by-side'
+
+# clean bash
+alias cbash="exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash --norc --noprofile"
 # }-
 
 # conditional -{
@@ -210,10 +214,6 @@ alias diff='diff --side-by-side'
 if [ -f /usr/share/mc/mc.gentoo ]; then
   /usr/share/mc/mc.gentoo
 fi
-# }-
-
-# my bin aliases -{
-alias sms='$HOME/sms/sms'
 # }-
 
 # django -{
