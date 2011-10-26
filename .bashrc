@@ -18,6 +18,7 @@ export BROWSER="google-chrome:chromium"
 export EDITOR="vim"
 export PATH=$PATH:$HOME/bin
 export HISTSIZE=100000000000000000
+shopt -s histappend
 
 cd $HOME
 # prompt -{
