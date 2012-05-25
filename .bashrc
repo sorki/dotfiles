@@ -151,7 +151,7 @@ test -f $VENWRAPPER || VENWRAPPER=~/bin/virtualenvwrapper.sh
 if [ -f $VENWRAPPER ]; then
   export WORKON_HOME=$HOME/envs/
   case $HOST in
-    psyche ) export WORKON_HOME=/data/envs/ ;;
+    fluffy ) export WORKON_HOME=/data/envs/ ;;
   esac
 
   source $VENWRAPPER
