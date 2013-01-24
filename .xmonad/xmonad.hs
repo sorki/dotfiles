@@ -35,12 +35,8 @@ import XMonad.Layout.PerWorkspace
 import XMonad.Layout.Grid
 import XMonad.Layout.LayoutHints
 
-
-
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
-
-
 
 -- > xprop | grep WM_CLASS
 myManageHook = composeAll
@@ -80,8 +76,10 @@ ppUBg = white
 iFg   = white     -- Icon
 iBg   = black
 ppSFg = "#171717" -- Separator
+-- bord  = "#000000" -- Border
+-- bordF = "#00dd00" -- Focused Border
 bord  = "#000000" -- Border
-bordF = "#00dd00" -- Focused Border
+bordF = "#68100B"
 
 iDir = "/home/rmarko/.xmonad/icons"
 
@@ -98,8 +96,8 @@ myLogHook h = dynamicLogWithPP $ defaultPP
         , ppOutput   = hPutStrLn h
       } where nostr x = ""
 
-m1Width = 1280
-m1Height = 800
+m1Width = 1366
+m1Height = 768
 
 lbarOffset = 0
 statusRatio = (1%9)
@@ -114,33 +112,23 @@ lbotBarWidth = floor $ fromRational $ bottomRatio * (fromInteger (m1Width - lbar
 rbotBarWidth = ceiling $ fromRational $ (1 - bottomRatio) * (fromInteger  (m1Width - lbarOffset))
 
 ltopBar = "dzen2 -x "++ (show lbarOffset) ++" -w "++ (show ltopBarWidth) ++" -ta l -sa l " ++ dzenCommon
---rtopBar  = "conky -c ~/.xmonad/conkytop | dzen2 -x "++ (show $ ltopBarWidth + lbarOffset) ++" -w "++ (show rtopBarWidth) ++" -ta r -sa l " ++ dzenCommon
 rtopBar  = "~/.xmonad/dzen_top | dzen2 -x "++ (show $ ltopBarWidth + lbarOffset) ++" -w "++ (show $ rtopBarWidth - rbarOffset) ++" -ta l -sa l " ++ dzenCommon
-lbotBar  = "conky -c ~/.xmonad/conkylbot | dzen2 -y "++(show $ m1Height - dzenWidth) ++" -x "++ (show lbarOffset) ++" -w "++ (show lbotBarWidth)++" -ta l -sa l " ++ dzenCommon
-rbotBar  = "conky -c ~/.xmonad/conkyrbot | dzen2 -y "++(show $ m1Height - dzenWidth)++" -x "++ (show $ lbotBarWidth + lbarOffset) ++" -w "++ (show rbotBarWidth) ++" -ta r -sa l " ++ dzenCommon
-
-botBar = "conky -c ~/.xmonad/conkytop | dzen2 -x '0' -y '780' -h '20' -w '1280' -ta 'r' " ++ dzenCommon
 
 main = do
     statusBar <- spawnPipe ltopBar
---    rtBar <- spawnPipe rtopBar
---    bBar <- spawnPipe botBar
---    lbBar <- spawnPipe lbotBar
---    rbBar <- spawnPipe rbotBar
     xmonad $ withUrgencyHook NoUrgencyHook
            $ gnomeConfig {
         terminal           = "~/bin/terminal",
         modMask            = mod1Mask,
         focusFollowsMouse  = True,
-        numlockMask        = mod2Mask,
         workspaces         = ["~", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="],
         normalBorderColor  = bord,
         focusedBorderColor = bordF,
+        borderWidth        = 1,
         keys               = myKeys,
         mouseBindings      = myMouseBindings,
         layoutHook         = avoidStruts $ smartBorders $ myLayout,
         manageHook         = myManageHook,
---      startupHook        = myStartupHook >> gnomeRegister >> startupHook desktopConfig,
         logHook            = myLogHook statusBar,
         startupHook        = unsafeSpawn ". $HOME/.xinitrc"
 
@@ -201,11 +189,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_period), sendMessage (IncMasterN (-1)))
     , ((modm,               xK_b     ), sendMessage ToggleStruts)
     , ((modm,               xK_g     ), withFocused toggleBorder)
---    , ((modm,               xK_s     ), SM.submap $ searchEngineMap $ S.promptSearchBrowser myXPConfig "chromium-browser")
     , ((modm,               xK_d     ), shellPrompt myXPConfig)
     , ((modm,               xK_s     ), spawn "~/bin/dim")
     , ((modm .|. shiftMask, xK_s     ), spawn "killall dim")
     , ((modm,               xK_r     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
+    , ((modm .|. controlMask, xK_l   ), spawn "~/bin/lock")
     ]
     ++
     [((m .|. modm, k), windows $ f i)
@@ -213,7 +201,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_q] [0..] -- w, q for xinerama
+        | (key, sc) <- zip [xK_w, xK_q, xK_e] [0..] -- w, q for xinerama
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 
