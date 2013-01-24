@@ -202,6 +202,8 @@ alias dirshare='python -m SimpleHTTPServer 8080'
 
 # clean bash
 alias cbash="exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash --norc --noprofile"
+
+alias duf='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 # }-
 
 # conditional -{
