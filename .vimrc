@@ -120,6 +120,7 @@ let Tlist_Exit_OnlyWindow = 1
 let g:Tex_DefaultTargetFormat = 'ps'
 let g:Tex_ViewRule_ps = 'evince'
 
+ab sefl self
 
 " !! Mess !!
 " ??
