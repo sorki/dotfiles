@@ -197,6 +197,7 @@ alias less="less -R"
 alias nless="less -N"
 alias psg="ps ax | grep $*"
 alias dirshare='python -m SimpleHTTPServer 8080'
+alias gg='git grep'
 
 # clean bash
 alias cbash="exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash --norc --noprofile"
