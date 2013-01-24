@@ -1,13 +1,20 @@
 [color]
-	diff = auto
-	status = auto
-	branch = auto
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
 [user]
-	name = Richard Marko
-	email = rissko@gmail.com
+  name = Richard Marko
+  email = rissko@gmail.com
 [core]
-	excludesfile = /home/sorki/.gitignore
-	autocrlf = input
+  excludesfile = /home/sorki/.gitignore.global
+  autocrlf = input
 [github]
-	user = sorki
-	token = XXX
+  user = sorki
+  token = XXX
+[alias]
+  lol = log --pretty=oneline --abbrev-commit --graph --decorate
+  newauthor = commit --amend --reset-author -C HEAD
+  cdiff = diff --cached
+[help]
+  autocorrect = 1
