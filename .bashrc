@@ -48,7 +48,7 @@ HD=$SHORT
 HOST=`hostname | cut -d '.' -f 1`
 DOMAIN=`hostname | cut -d '.' -f 2-`
 
-if [ $HOST != "fluffy" ]; then
+if [ $HOST != "grampi" ]; then
   HC=$RED
 fi
 
@@ -151,6 +151,7 @@ test -f $VENWRAPPER || VENWRAPPER=~/bin/virtualenvwrapper.sh
 if [ -f $VENWRAPPER ]; then
   export WORKON_HOME=$HOME/envs/
   case $HOST in
+    grampi ) export WORKON_HOME=/data/envs/ ;;
     fluffy ) export WORKON_HOME=/data/envs/ ;;
   esac
 
