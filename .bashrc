@@ -200,8 +200,6 @@ alias nless="less -N"
 alias psg="ps ax | grep $*"
 alias dirshare='python -m SimpleHTTPServer 8080'
 
-alias diff='diff --side-by-side'
-
 # clean bash
 alias cbash="exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash --norc --noprofile"
 # }-
@@ -211,7 +209,7 @@ alias cbash="exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash --norc -
 [[ -e `which less 2> /dev/null` ]] && alias more='less'
 [[ -e `which vim 2> /dev/null` ]] && alias vi='vim'
 
-[[ -e `which colordiff 2> /dev/null` ]] && alias diff='colordiff --side-by-side'
+[[ -e `which colordiff 2> /dev/null` ]] && alias sdiff='colordiff --side-by-side'
 
 if [ -f /usr/share/mc/mc.gentoo ]; then
   /usr/share/mc/mc.gentoo
