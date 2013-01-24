@@ -101,8 +101,6 @@ fi
 #  fi
   # }-
 
-  xtitle `whoami`@`uname -n`:$PWD 
-
   host="${HC}@${HD}${NIL}"
 
   if [ "$USER" = "root" ]; then
@@ -224,27 +222,7 @@ alias rspub='./manage.py runserver_plus 0.0.0.0:8000'
 alias sp='./manage.py shell_plus'
 # }-
 
-# xtitle aliases -{
-alias top='xtitle TOP && top'
-alias mplayer='xtitle Mplayer && mplayer'
-alias radio='xtitle Radio && playradio'
 
-function man()
-{
-  for i ; do
-    xtitle "man: '$(basename $1|tr -d .[:digit:])'"
-    command man "$i"
-  done
-}
-
-function vim()
-{
-  for i ; do
-    xtitle "Vim: $(basename \"$1\")"
-    command vim "$i"
-  done
-}
-# }-
 
 # console dvd's -{
 function mpd() 
@@ -296,42 +274,7 @@ function repeat()
 }
 # }-
 
-# xtitle -{
-function xtitle() {
-  case "$TERM" in
-    xterm | rxvt | urxvt)
-      echo -ne "\033]0; $* \007"
-      ;;
-    *)
-      ;;
-  esac
-
-}
-
-# }-
-
-# NVIDIA -{
-function _nv_set_perf() {
-  overclocking=`nvidia-settings -t -q GPUOverclockingState`
-  if [ ! $overclocking = 1 ]; then
-    nvidia-settings --assign='GPUOverclockingState=1' > /dev/null
-  fi
-  freq=`nvidia-settings -t -q GPU3DClockFreqs`
-  if [ ! $freq = "$1,$2" ]; then
-    nvidia-settings --assign="GPU3DClockFreqs=$1,$2" > /dev/null
-  fi
-}
-
-alias nv_set_low='_nv_set_perf 150 100'
-alias nv_set_med='_nv_set_perf 300 200'
-alias nv_set_high='_nv_set_perf 600 400'
-
-# }-
-
 # Use bash-completion, if available
 if [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
 fi
-
-
-#clear
