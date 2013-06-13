@@ -39,15 +39,15 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 -- > xprop | grep WM_CLASS
+-- > xprop | grep WM_CLASS | cut -d' ' -f3
 myManageHook = composeAll
     [ manageHook gnomeConfig
     , className =? "MPlayer"           --> doFloat
     , className =? "Gimp"              --> doFloat
-    , className =? "Pidgin"            --> doShift "3"
-    , className =? "Skype0"            --> doShift "3"
+    , className =? "Pidgin"            --> doShift "7"
     , className =? "Sonata"            --> doShift "5"
     , className =? "Thunderbird"       --> doShift "6"
-    , className =? "google-chrome"     --> doShift "1"
+    , className =? "Google-chrome"     --> doShift "1"
     , resource  =? "desktop_window"    --> doIgnore
     , resource  =? "kdesktop"          --> doIgnore
     , className =? "stalonetray"       --> doIgnore
@@ -131,19 +131,16 @@ main = do
         manageHook         = myManageHook,
         logHook            = myLogHook statusBar,
         startupHook        = unsafeSpawn ". $HOME/.xinitrc"
-
     }
 
-myLayout = onWorkspace "1" (noBorders Full ||| tall ) $ onWorkspace "3" imLayout $ std
+myLayout = onWorkspace "1" (noBorders Full ||| tall ) $ onWorkspace "7" imLayout $ std
     where
       std = (tall ||| Mirror tall ||| noBorders Full)
       tall = Tall 1 (3/100) (1/2)
       imtall = Tall 2 (3/100) (1/2)
-      imLayout = reflectHoriz $ withIM pidginRatio pidginRoster $ reflectHoriz $ withIM skypeRatio skypeRoster (imtall ||| Mirror imtall ||| Grid)
+      imLayout = reflectHoriz $ withIM pidginRatio pidginRoster (imtall ||| Mirror imtall ||| Grid)
       pidginRatio  = (1%7)
       pidginRoster = And (ClassName "Pidgin") (Role "buddy_list")
-      skypeRatio= (1%7)
-      skypeRoster  = And (ClassName "Skype0") (Role "MainWindow")
 
 -- X prompt
 myXPConfig = defaultXPConfig
@@ -156,15 +153,6 @@ myXPConfig = defaultXPConfig
         , fgHLight    = "#ff0000"
         , position = Bottom
     }
-
-searchEngineMap method = M.fromList $
-       [ ((0, xK_g), method S.google )
-       , ((0, xK_y), method S.youtube )
-       , ((0, xK_m), method S.maps )
-       , ((0, xK_d), method S.dictionary )
-       , ((0, xK_w), method S.wikipedia )
-       , ((0, xK_i), method S.imdb )
-       ]
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
