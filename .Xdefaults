@@ -36,7 +36,7 @@ URxvt.urgentOnBell:         true
 !URxvt.perl-ext-common:      default,matcher
 URxvt.perl-ext-common:      matcher
 URxvt.colorUL:              #86a2be
-URxvt.url-launcher:         browser
+URxvt.url-launcher:         /home/rmarko/browser
 URxvt.underlineURLs:        true
 URxvt.matcher.button:       1
 

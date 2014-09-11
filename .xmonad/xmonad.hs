@@ -13,6 +13,7 @@ import XMonad.Prompt.Shell
 import XMonad.Prompt
 
 import XMonad.Actions.CycleWS
+import XMonad.Actions.Plane
 import XMonad.Actions.CycleRecentWS
 import XMonad.Actions.WindowGo
 import qualified XMonad.Actions.Search as S
@@ -20,6 +21,7 @@ import XMonad.Actions.Search
 import qualified XMonad.Actions.Submap as SM
 import XMonad.Actions.GridSelect
 import XMonad.Actions.NoBorders
+import XMonad.Actions.WindowBringer
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -154,7 +156,7 @@ myXPConfig = defaultXPConfig
         , position = Bottom
     }
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+myKeys conf@(XConfig {XMonad.modMask = modm}) = (M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
     , ((modm .|. shiftMask, xK_c     ), kill)
     , ((modm .|. shiftMask, xK_End   ), io (exitWith ExitSuccess))
@@ -178,6 +180,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_b     ), sendMessage ToggleStruts)
     , ((modm,               xK_g     ), withFocused toggleBorder)
     , ((modm,               xK_d     ), shellPrompt myXPConfig)
+    , ((modm .|. shiftMask, xK_g     ), gotoMenu)
+    , ((modm .|. shiftMask, xK_b     ), bringMenu)
     , ((modm,               xK_s     ), spawn "~/bin/dim")
     , ((modm .|. shiftMask, xK_s     ), spawn "killall dim")
     , ((modm,               xK_r     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
@@ -190,7 +194,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ++
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_q, xK_e] [0..] -- w, q for xinerama
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]] )
+    -- `M.union` planeKeys modm (Lines 1) Circular
 
 
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $

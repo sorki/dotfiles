@@ -1,7 +1,24 @@
 "vim: set ft=vim :
 syntax on
-filetype on
+filetype off
 colorscheme srk
+
+"set rtp+=~/.vim/bundle/vundle/
+"call vundle#rc()
+
+"Bundle 'Valloric/YouCompleteMe'
+"
+call pathogen#infect()
+call pathogen#helptags()
+
+filetype plugin indent on
+syntax on
+
+"let g:pymode_lint_checker = "pylint"
+let g:pymode_lint_checker = "pyflakes,pep8,mccabe"
+"let g:pymode_lint_ignore = "E124"
+let g:pymode_lint_write = 1
+let g:pymode_folding = 0
 
 set autoindent
 set modeline
@@ -140,4 +157,6 @@ ab sefl self
 "highlight Folded term=bold cterm=NONE ctermfg=Grey ctermbg=DarkGrey
 
 
+" macros
 
+let @t = 'r €krr $a \j€kh'

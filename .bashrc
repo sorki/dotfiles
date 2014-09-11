@@ -200,6 +200,7 @@ alias nless="less -N"
 alias psg="ps ax | grep $*"
 alias dirshare='python -m SimpleHTTPServer 8000'
 alias gg='git grep'
+alias ga='git add'
 
 # clean bash
 alias cbash="exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash --norc --noprofile"
@@ -208,6 +209,7 @@ alias vim='vim -o'
 alias vmi='vim'
 alias svmi='vim'
 alias svim='vim'
+alias vun='vim'
 alias duf='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
 # }-
 
