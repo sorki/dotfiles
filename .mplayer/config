@@ -3,5 +3,7 @@ fstype=none
 #vo=gl
 
 subcp=cp1250
+subfont-text-scale=4
+subwidth=100
 cache=8192
 cache-min=4

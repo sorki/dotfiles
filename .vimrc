@@ -3,11 +3,14 @@ syntax on
 filetype off
 colorscheme srk
 
-"set rtp+=~/.vim/bundle/vundle/
-"call vundle#rc()
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
 
 "Bundle 'Valloric/YouCompleteMe'
-"
+Bundle 'chikamichi/mediawiki.vim'
+Bundle 'gmarik/vundle'
+Bundle 'munshkr/vim-tidal'
+
 call pathogen#infect()
 call pathogen#helptags()
 
@@ -21,15 +24,18 @@ let g:pymode_lint_write = 1
 let g:pymode_folding = 0
 
 set autoindent
+set smarttab
 set modeline
 set nowrap
 set number
 set numberwidth=2
 set backspace=indent,eol,start
-set history=50
+set history=1000
+set undolevels=1000
 set hlsearch
+set incsearch
 set ruler
-set suffixes=.bak,~,.o,.h,.info,.swp,.obj,.info,.aux,.log,.dvi,.bbl,.out,.o,.lo,.pyo,.pyc
+set suffixes=bak,~,.o,.h,.info,.swp,.obj,.info,.aux,.log,.dvi,.bbl,.out,.o,.lo,.pyo,.pyc
 set previewheight=40
 set foldminlines=8
 
@@ -57,13 +63,13 @@ cno jj <c-c>
 " python       "
 """"""""""""""""
 " fixes, cfgs 
-autocmd FileType python set complete+=k~/.vim/syntax/python.vim isk+=.,(
+" autocmd FileType python set complete+=k~/.vim/syntax/python.vim isk+=.,(
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd BufReadPost *.py retab
 autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 
 " omni
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+" autocmd FileType python set omnifunc=pythoncomplete#Complete
 
 " python syntax
 let python_highlight_all=1
@@ -159,4 +165,53 @@ ab sefl self
 
 " macros
 
-let @t = 'r €krr $a \j€kh'
+let @t = 'r ?krr $a \j?kh'
+
+
+let mapleader = "\<Space>"
+nnoremap <Leader><Leader> :w<CR>
+nnoremap <Leader>q :wq<CR>
+
+vnoremap <silent> y y`]
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
+
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+  let @" = s:restore_reg
+  return ''
+endfunction
+function! s:Repl()
+  let s:restore_reg = @"
+  return "p@=RestoreRegister()\<cr>"
+endfunction
+vmap <silent> <expr> p <sid>Repl()
+
+nnoremap <CR> G
+nnoremap <BS> gg
+
+map q: :q
+set pastetoggle=<F1>
+
+nnoremap j gj
+nnoremap k gk
+
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+
+nmap <silent> <Leader>/ :nohlsearch<CR>
+
+map <Leader>s :let g:pymode_lint=0<CR>
+
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+set virtualedit=all

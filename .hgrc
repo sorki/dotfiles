@@ -1,2 +1,6 @@
 [ui]
-username = Richard Marko <rissko@gmail.com>
+username = Richard Marko <rmarko@fedoraproject.org>
+
+[auth]
+bb.prefix = https://bitbucket.org
+bb.username = rmarko

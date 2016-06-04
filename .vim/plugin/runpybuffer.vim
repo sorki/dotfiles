@@ -1,7 +1,8 @@
 " ------------------------------------- RUN PY BUFFER ----------------------
 
 fu! DoRunPyBuffer2()
-write
+" write
+wa
 pclose! " force preview window closed
 setlocal ft=python
 
@@ -9,7 +10,7 @@ setlocal ft=python
 sil %y a | below new | sil put a | sil %!python -
 " indicate the output window as the current previewwindow
 setlocal previewwindow nomodifiable nomodified 
-resize 10 
+resize 1
 
 " back into the original window
 winc p
@@ -21,5 +22,4 @@ map <F5> :RunPyBuffer<CR>
 map <F2> :pc<CR>
 
 
-
-
+autocmd TextChanged,TextChangedI *.spy call DoRunPyBuffer2()

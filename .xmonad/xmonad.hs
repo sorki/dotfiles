@@ -27,6 +27,7 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.EwmhDesktops
 
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
@@ -55,7 +56,7 @@ myManageHook = composeAll
     , className =? "stalonetray"       --> doIgnore
     , title     =? "irssi"             --> doShift "~"
 
-    , isFullscreen                     --> (doF W.focusDown <+> doFullFloat) 
+    , isFullscreen                     --> (doF W.focusDown <+> doFullFloat)
     ] <+> manageDocks
 
 -- Colors
@@ -119,6 +120,7 @@ rtopBar  = "~/.xmonad/dzen_top | dzen2 -x "++ (show $ ltopBarWidth + lbarOffset)
 main = do
     statusBar <- spawnPipe ltopBar
     xmonad $ withUrgencyHook NoUrgencyHook
+           $ ewmh
            $ gnomeConfig {
         terminal           = "~/bin/terminal",
         modMask            = mod1Mask,
@@ -135,12 +137,13 @@ main = do
         startupHook        = unsafeSpawn ". $HOME/.xinitrc"
     }
 
-myLayout = onWorkspace "1" (noBorders Full ||| tall ) $ onWorkspace "7" imLayout $ std
+myLayout = onWorkspace "1" (noBorders Full ||| tall ) $ onWorkspace "5" mediaLayout $ onWorkspace "7" imLayout $ std
     where
       std = (tall ||| Mirror tall ||| noBorders Full)
       tall = Tall 1 (3/100) (1/2)
       imtall = Tall 2 (3/100) (1/2)
       imLayout = reflectHoriz $ withIM pidginRatio pidginRoster (imtall ||| Mirror imtall ||| Grid)
+      mediaLayout = (imtall ||| Grid ||| noBorders Full)
       pidginRatio  = (1%7)
       pidginRoster = And (ClassName "Pidgin") (Role "buddy_list")
 
@@ -155,6 +158,8 @@ myXPConfig = defaultXPConfig
         , fgHLight    = "#ff0000"
         , position = Bottom
     }
+
+homeMask = 110
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = (M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -186,6 +191,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = (M.fromList $
     , ((modm .|. shiftMask, xK_s     ), spawn "killall dim")
     , ((modm,               xK_r     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
     , ((modm .|. controlMask, xK_l   ), spawn "~/bin/lock")
+    , ((modm, xK_u), spawn "~/bin/sound_on")
+    , ((modm, xK_i), spawn "~/bin/sound_off")
+    , ((modm, xK_o), spawn "~/bin/light_on")
+    , ((modm, xK_p), spawn "~/bin/light_off")
     ]
     ++
     [((m .|. modm, k), windows $ f i)

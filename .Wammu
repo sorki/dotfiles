@@ -1,6 +1,6 @@
 [Wammu]
 FirstRun=1.24414e+09
-RunCounter=2
+RunCounter=6
 AutoConnect=no
 RefreshState=30000
 ConfirmDelete=yes
@@ -10,22 +10,22 @@ DefaultDateOffset=1
 DefaultEntries=3
 PhonePrefix=Auto
 NameFormat=auto
-LastPhonePrefix=+420
+LastPhonePrefix=+421
 [Main]
 X=0
 Y=24
-Width=1280
-Height=726
+Width=958
+Height=1054
 Split=160
-SplitRight=230
+SplitRight=686
 [Defaults]
 SearchType=0
 [Gammu]
 Section=0
 Gammurc=~/.gammurc
-SyncTime=yes
-LockDevice=no
-StartInfo=no
+SyncTime=1
+LockDevice=0
+StartInfo=1
 [BrowserSortKey]
 info=Name
 calendar=Location
@@ -53,5 +53,5 @@ ScaleImage=1
 MaxEmptyGuess=50
 MaxEmptyKnown=100
 [Phone-0]
-Manufacturer=Sony Ericsson
-Model=K800i
+Manufacturer=Ericsson
+Model=K530i

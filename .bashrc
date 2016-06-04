@@ -181,7 +181,6 @@ alias lhn='ls | nless'
 alias ff='find . -name $*'
 
 # movement
-alias .='pwd'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias -- -='cd -'
@@ -207,10 +206,14 @@ alias cbash="exec env -i HOME=$HOME TERM=$TERM PS1='\u:\w\$ ' /bin/bash --norc -
 
 alias vim='vim -o'
 alias vmi='vim'
+alias vin='vim'
 alias svmi='vim'
 alias svim='vim'
 alias vun='vim'
 alias duf='du -sk * | sort -n | perl -ne '\''($s,$f)=split(m{\t});for (qw(K M G)) {if($s<1024) {printf("%.1f",$s);print "$_\t$f"; last};$s=$s/1024}'\'
+
+alias rpiserial='screen /dev/ttyUSB0 115200'
+alias ipy='ipython qtconsole --matplotlib inline --colors=linux'
 # }-
 
 # conditional -{
@@ -282,6 +285,22 @@ function repeat()
   done
 }
 # }-
+
+
+ssh-reagent () {
+  for agent in /tmp/ssh-*/agent.*; do
+      export SSH_AUTH_SOCK=$agent
+      ret=$( ssh-add -l 2> /dev/null )
+      if [ $? == 0 ] || [ "$ret" == "The agent has no identities." ]; then
+         #echo Found working SSH Agent:
+         #ssh-add -l
+         return
+      fi
+  done
+  echo Cannot find ssh agent - maybe you should reconnect and forward it?
+}
+
+ssh-reagent
 
 # Use bash-completion, if available
 if [ -f /etc/bash_completion ]; then
