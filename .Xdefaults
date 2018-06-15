@@ -80,12 +80,18 @@ URxvt.keysym.C-Left: \033[1;5D
 URxvt.keysym.C-0:     command:\033]710;xft:Monospace:size=11\007\033]711;xft:Monospace:bold:size=11\007
 URxvt.keysym.C-minus: command:\033]710;xft:Monospace:size=8\007\033]711;xft:Monospace:bold:size=8\007
 URxvt.keysym.C-equal: command:\033]710;xft:Monospace:size=18\007\033]711;xft:Monospace:bold:size=18\007
+#
+#Xft.dpi:       96
+#Xft.antialias: true
+#Xft.hinting:   true
+#Xft.hintstyle: hintfull
+#Xft.rgba:      rgb
 
-Xft.dpi:       96
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
+Xft.hinting: 1
 Xft.antialias: true
-Xft.hinting:   true
-Xft.hintstyle: hintfull
-Xft.rgba:      rgb
 
 
 URxvt.perl-ext-common: keyboard-select,url-select,clipboard
