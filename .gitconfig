@@ -1,0 +1,39 @@
+[color]
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
+[user]
+  name = Richard Marko
+	email = srk@48.io
+[core]
+  excludesfile = /home/rmarko/.gitignore_global
+  autocrlf = input
+[github]
+  user = sorki
+  token = XXX
+[alias]
+  lol = log --pretty=oneline --abbrev-commit --graph --decorate
+  newauthor = commit --amend --reset-author -C HEAD
+  cdiff = diff --cached
+  sed = ! git grep -z --full-name -l '.' | xargs -0 sed -i -e
+  fh = commit --fixup=HEAD
+  fha = commit -a --fixup=HEAD
+[help]
+  autocorrect = 1
+[push]
+  default = simple
+[rebase]
+  autosquash = true
+[branch]
+  autosetupmerge = always
+  autosetuprebase = always
+[merge]
+  #conflictstyle = diff3
+  tool = mymeld
+
+[mergetool "mymeld"]
+  cmd = meld --auto-merge --output $MERGED $LOCAL $BASE $REMOTE
+[sendemail]
+  suppresscc = self
+

@@ -3,16 +3,19 @@ syntax on
 filetype off
 colorscheme srk
 
+let maplocalleader = "\<Space>"
+
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 "Bundle 'Valloric/YouCompleteMe'
-Bundle 'chikamichi/mediawiki.vim'
+"Bundle 'chikamichi/mediawiki.vim'
+Bundle 'LnL7/vim-nix'
 Bundle 'gmarik/vundle'
 Bundle 'munshkr/vim-tidal'
-
-call pathogen#infect()
-call pathogen#helptags()
+"
+"call pathogen#infect()
+"call pathogen#helptags()
 
 filetype plugin indent on
 syntax on
@@ -20,7 +23,7 @@ syntax on
 "let g:pymode_lint_checker = "pylint"
 let g:pymode_lint_checker = "pyflakes,pep8,mccabe"
 "let g:pymode_lint_ignore = "E124"
-let g:pymode_lint_write = 1
+"let g:pymode_lint_write = 1
 let g:pymode_folding = 0
 
 set autoindent
@@ -75,11 +78,11 @@ autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 let python_highlight_all=1
 
 " fix python path (outdated??)
-python << EOF
-import os
-import sys
-sys.path.append("/usr/lib/python2.6/site-packages")
-EOF
+" python << EOF
+" import os
+" import sys
+" sys.path.append("/usr/lib/python2.6/site-packages")
+" EOF
 
 
 """"""""""""""""
@@ -203,7 +206,7 @@ map <right> <nop>
 
 nmap <silent> <Leader>/ :nohlsearch<CR>
 
-map <Leader>s :let g:pymode_lint=0<CR>
+"map <Leader>s :let g:pymode_lint=0<CR>
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}

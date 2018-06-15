@@ -12,15 +12,13 @@ if [ -f ~/.bash_local ]; then
 fi
 
 export LANG="en_US.utf-8"
-export LC_ALL="en_US.utf-8"
-export BROWSER="google-chrome:chromium"
+#export LC_ALL="en_US.utf-8"
 
 export EDITOR="vim"
 export PATH=$PATH:$HOME/bin
 export HISTSIZE=100000000000000000
 shopt -s histappend
 
-cd $HOME
 # prompt -{
 # colors -{
 RED='\[\033[01;31m\]'
@@ -106,9 +104,15 @@ fi
   if [ "$USER" = "root" ]; then
     user="${RED}\u${NIL}"
     end_char="#"
-  else 
+  else
     user="${UC}\u${NIL}"
     end_char="$"
+  fi
+
+  if [ "x$IN_NIX_SHELL" != "x" ]; then
+    nixshell="[${GREEN}${IN_NIX_SHELL}${NIL}]"
+  else
+    nixshell=""
   fi
 
   path="${LC}${newPWD}${NIL}"
@@ -122,9 +126,9 @@ fi
   # prompt styles
   case $PROMPT_STYLE in
     default )
-      export PS1="${venv}${branch}${user}${at}${host} ${path} ${end}" ;;
+      export PS1="${nixshell}${venv}${branch}${user}${at}${host} ${path} ${end}" ;;
     long )
-      export PS1="\n${venv}${branch}${user}${at}${host} ${PWD} \n${end}" ;;
+      export PS1="\n${nixshell}${venv}${branch}${user}${at}${host} ${PWD} \n${end}" ;;
   esac
 
   PS1="\[\033[G\]$PS1"
@@ -142,25 +146,6 @@ function prompt_default() {
 
 prompt_long
 
-# }-
-
-# python virtuals, PIP -{
-VENWRAPPER=/usr/bin/virtualenvwrapper.sh
-test -f $VENWRAPPER || VENWRAPPER=~/bin/virtualenvwrapper.sh
-
-if [ -f $VENWRAPPER ]; then
-  export WORKON_HOME=$HOME/envs/
-  case $HOST in
-    grampi ) export WORKON_HOME=/data/envs/ ;;
-    fluffy ) export WORKON_HOME=/data/envs/ ;;
-  esac
-
-  source $VENWRAPPER
-
-  export PIP_VIRTUALENV_BASE=$WORKON_HOME
-  export PIP_RESPECT_VIRTUALENV=true
-  export PIP_DOWNLOAD_CACHE='/tmp/pip_cache'
-fi
 # }-
 
 # ALIASES -{
@@ -251,30 +236,6 @@ alias playdvd='xinedvd'
 # }-
 # }-
 
-# lstodo -{
-alias lstodo=todolist
-
-function todolist()
-{
-  C_Y=`echo -e '\033[33;01m'`
-  C_Re=`echo -e '\033[31;01m'`
-  C_G=`echo -e '\033[32;01m'`
-  C_B=`echo -e '\033[34;01m'`
-  C_R=`echo -e '\033[m'`
-
-  grep -Ri todo . | sed "s/[ ]\{1,\}/ /g" |
-  sed "s/{#\(.*\)#}/\1/g" |
-  sed "s/ *[#\.]* *TODO *//g" |
-  sed "s/\((minor)\):*/${C_Y}\1${C_R}:/g"    |
-  sed "s/\((normal)\):*/${C_G}\1${C_R}:/g"   |
-  sed "s/\((major)\):*/${C_Re}\1${C_R}:/g"   |
-  sed "s/\((docs)\):*/${C_B}\1${C_R}:/g"     |
-  sed "s/^\.\///g"   |
-  sed "s/:[^0:]*:/:${C_B}${C_R}:/" |
-  awk -F: '{ printf "%-45s %-20s", $1, $2; for (i=3; i<=NF; i++) printf "%s", $i; printf "\n"  }'
-}
-# }-
-
 # Repeat n times command -{
 function repeat()
 {
@@ -285,22 +246,6 @@ function repeat()
   done
 }
 # }-
-
-
-ssh-reagent () {
-  for agent in /tmp/ssh-*/agent.*; do
-      export SSH_AUTH_SOCK=$agent
-      ret=$( ssh-add -l 2> /dev/null )
-      if [ $? == 0 ] || [ "$ret" == "The agent has no identities." ]; then
-         #echo Found working SSH Agent:
-         #ssh-add -l
-         return
-      fi
-  done
-  echo Cannot find ssh agent - maybe you should reconnect and forward it?
-}
-
-ssh-reagent
 
 # Use bash-completion, if available
 if [ -f /etc/bash_completion ]; then

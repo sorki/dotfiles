@@ -63,11 +63,8 @@ myManageHook = composeAll
 black = "#000000"
 white = "#ffffff"
 
-dzenFg = white
-dzenBg = black
-dzenFont = "Sans:bold:size=10"
-dzenWidth = 24
-dzenCommon = "-xs 0 -h "++(show dzenWidth)++" -bg '"++dzenBg++"' -fg '"++dzenFg++"' -fn '"++dzenFont++"'"
+xmobarFg = white
+xmobarBg = black
 
 ppFg  = "#faaaaa" -- FG
 ppBg  = black
@@ -79,19 +76,17 @@ ppUBg = white
 iFg   = white     -- Icon
 iBg   = black
 ppSFg = "#171717" -- Separator
--- bord  = "#000000" -- Border
--- bordF = "#00dd00" -- Focused Border
 bord  = "#000000" -- Border
-bordF = "#68100B"
+bordF = "#68100B" -- Focused Border
 
 iDir = "/home/rmarko/.xmonad/icons"
 
 myLogHook h = dynamicLogWithPP $ defaultPP
-      {   ppCurrent  = dzenColor ppFg ppBg . dzenStrip
-        , ppVisible  = dzenColor ppVFg ppVBg . dzenStrip
-        , ppHidden          = dzenColor dzenFg dzenBg . dzenStrip
-        , ppHiddenNoWindows = dzenColor ppHFg dzenBg . dzenStrip
-        , ppUrgent          = dzenColor ppUFg ppUBg . wrap ("^i(" ++ iDir ++ "/info_03.xbm)") "" . dzenStrip
+      {   ppCurrent  = xmobarColor ppFg ppBg . xmobarStrip
+        , ppVisible  = xmobarColor ppVFg ppVBg . xmobarStrip
+        , ppHidden          = xmobarColor xmobarFg xmobarBg . xmobarStrip
+        , ppHiddenNoWindows = xmobarColor ppHFg xmobarBg . xmobarStrip
+        , ppUrgent          = xmobarColor ppUFg ppUBg . wrap ("<icon=info_03.xbm/>") "" . xmobarStrip
         , ppWsSep    = ""
         , ppSep      = " "
         , ppLayout   = nostr
@@ -99,26 +94,11 @@ myLogHook h = dynamicLogWithPP $ defaultPP
         , ppOutput   = hPutStrLn h
       } where nostr x = ""
 
-m1Width = 1366
-m1Height = 768
+myBar = "xmobar"
 
-lbarOffset = 0
-statusRatio = (1%9)
-bottomRatio = (1%2)
-
-rbarOffset = 24*8
-
-ltopBarWidth = floor $ fromRational $ statusRatio * (fromInteger (m1Width - lbarOffset))
-rtopBarWidth = ceiling $ fromRational $ (1 - statusRatio) * (fromInteger  (m1Width - lbarOffset))
-
-lbotBarWidth = floor $ fromRational $ bottomRatio * (fromInteger (m1Width - lbarOffset))
-rbotBarWidth = ceiling $ fromRational $ (1 - bottomRatio) * (fromInteger  (m1Width - lbarOffset))
-
-ltopBar = "dzen2 -x "++ (show lbarOffset) ++" -w "++ (show ltopBarWidth) ++" -ta l -sa l " ++ dzenCommon
-rtopBar  = "~/.xmonad/dzen_top | dzen2 -x "++ (show $ ltopBarWidth + lbarOffset) ++" -w "++ (show $ rtopBarWidth - rbarOffset) ++" -ta l -sa l " ++ dzenCommon
 
 main = do
-    statusBar <- spawnPipe ltopBar
+    statusBar <- spawnPipe "xmobar"
     xmonad $ withUrgencyHook NoUrgencyHook
            $ ewmh
            $ gnomeConfig {
@@ -134,6 +114,7 @@ main = do
         layoutHook         = avoidStruts $ smartBorders $ myLayout,
         manageHook         = myManageHook,
         logHook            = myLogHook statusBar,
+        --logHook            = dynamicLogWithPP $ def { ppOutput = hPutStrLn statusBar },
         startupHook        = unsafeSpawn ". $HOME/.xinitrc"
     }
 
@@ -189,7 +170,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = (M.fromList $
     , ((modm .|. shiftMask, xK_b     ), bringMenu)
     , ((modm,               xK_s     ), spawn "~/bin/dim")
     , ((modm .|. shiftMask, xK_s     ), spawn "killall dim")
-    , ((modm,               xK_r     ), spawn "killall conky; killall dzen2; xmonad --recompile; xmonad --restart")
+    , ((modm,               xK_r     ), spawn "xmonad --recompile; xmonad --restart")
     , ((modm .|. controlMask, xK_l   ), spawn "~/bin/lock")
     , ((modm, xK_u), spawn "~/bin/sound_on")
     , ((modm, xK_i), spawn "~/bin/sound_off")
@@ -202,7 +183,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = (M.fromList $
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
     [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_q, xK_e] [0..] -- w, q for xinerama
+        | (key, sc) <- zip [xK_q, xK_w] [0..] -- w, q for xinerama
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]] )
     -- `M.union` planeKeys modm (Lines 1) Circular
 
